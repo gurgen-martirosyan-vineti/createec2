@@ -1,0 +1,34 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  # generateName: maintenance-workflow-
+  name: createec2-workflow
+  namespace: argo
+spec:
+  entrypoint: createec2-workflow
+  ttlStrategy:
+    secondsAfterSuccess: 1800 # 30 minutes
+  volumes:
+    - name: secret-vol
+      secret:
+        secretName: aws-credentials
+  templates:
+    - name: createec2-workflow
+      metadata:
+        labels:
+          app: gurgen-workflow-pod
+      container:
+        image: "788197806324.dkr.ecr.us-west-2.amazonaws.com/gurgens-image:latest"
+        imagePullPolicy: IfNotPresent
+        command: [ "python", "./create_ec2.py" ]
+        env:
+          - name: AWS_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: "aws-credentials"
+                key: "id"
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: "aws-credentials"
+                key: "key"
