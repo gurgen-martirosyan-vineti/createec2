@@ -27,5 +27,5 @@ spec:
           - name: AWS_SECRET_ACCESS_KEY
             valueFrom:
               secretKeyRef:
-                name: "aws-credes"
+                name: "aws-creds"
                 key: "key"
