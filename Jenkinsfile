@@ -9,19 +9,17 @@ pipeline {
                             $class: 'GitSCM',
                             userRemoteConfigs: [[
                                                         credentialsId: 'GitHub-Credentials',
-                                                        url: 'https://github.com/vinetiworks/devsecops-cicd.git'
+                                                        url: 'https://github.com/gurgen-martirosyan-vineti/createec2.git'
                                                 ]],
-                            branches: [[name: "gmartirosyan_testings"]]
+                            branches: [[name: "main"]]
                     ]
                 }
-                dir("python") {
+                dir("createec2") {
                     sh label: "Building and pushing docker image", script: """
-                    aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 788197806324.dkr.ecr.us-west-2.amazonaws.com
-                    pwd
-                    ls -la
+                    aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 160878852983.dkr.ecr.us-west-2.amazonaws.com
                     docker build -t createec2 .
-                    docker tag createec2:latest 788197806324.dkr.ecr.us-west-2.amazonaws.com/gurgens-image:latest
-                    docker push 788197806324.dkr.ecr.us-west-2.amazonaws.com/gurgens-image:latest
+                    docker tag createec2:latest 160878852983.dkr.ecr.us-west-2.amazonaws.com/python:latest
+                    docker push 160878852983.dkr.ecr.us-west-2.amazonaws.com/python:latest
                     """
                 }
             }
@@ -39,7 +37,7 @@ pipeline {
         }
         stage('Workflow') {
             steps {
-                dir ("python") {
+                dir ("createec2") {
                     sh  label: "Run Argo Workflow", script: """
                     argo submit createec2-workflow.yaml
                     """
