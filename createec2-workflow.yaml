@@ -1,7 +1,6 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
-  # generateName: maintenance-workflow-
   name: createec2-workflow
   namespace: argo
 spec:
@@ -15,10 +14,8 @@ spec:
   templates:
     - name: createec2-workflow
       metadata:
-        labels:
-          app: gurgen-workflow-pod
       container:
-        image: "788197806324.dkr.ecr.us-west-2.amazonaws.com/gurgens-image:latest"
+        image: "160878852983.dkr.ecr.us-west-2.amazonaws.com/python:latest"
         imagePullPolicy: IfNotPresent
         command: [ "python", "./create_ec2.py" ]
         env:
