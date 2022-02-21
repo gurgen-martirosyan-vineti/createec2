@@ -17,7 +17,7 @@ spec:
       container:
         image: "160878852983.dkr.ecr.us-west-2.amazonaws.com/python:latest"
         imagePullPolicy: IfNotPresent
-        command: [ "python", "./create_ec2.py" ]
+        command: [ "python", "./createec2.py" ]
         env:
           - name: AWS_ACCESS_KEY_ID
             valueFrom:
