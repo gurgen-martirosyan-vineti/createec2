@@ -10,7 +10,7 @@ spec:
   volumes:
     - name: secret-vol
       secret:
-        secretName: aws-credentials
+        secretName: aws-creds
   templates:
     - name: createec2-workflow
       metadata:
@@ -22,10 +22,10 @@ spec:
           - name: AWS_ACCESS_KEY_ID
             valueFrom:
               secretKeyRef:
-                name: "aws-credentials"
+                name: "aws-creds"
                 key: "id"
           - name: AWS_SECRET_ACCESS_KEY
             valueFrom:
               secretKeyRef:
-                name: "aws-credentials"
+                name: "aws-credes"
                 key: "key"
