@@ -14,7 +14,7 @@ pipeline {
                             branches: [[name: "main"]]
                     ]
                 }
-                dir("createec2") {
+                dir("application") {
                     sh label: "Building and pushing docker image", script: """
                     aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 160878852983.dkr.ecr.us-west-2.amazonaws.com
                     docker build -t createec2 .
@@ -37,7 +37,7 @@ pipeline {
         }
         stage('Workflow') {
             steps {
-                dir ("createec2") {
+                dir ("application") {
                     sh  label: "Run Argo Workflow", script: """
                     argo submit createec2-workflow.yaml
                     """
