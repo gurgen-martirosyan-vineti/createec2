@@ -2,7 +2,6 @@ import boto3
 
 AWS_REGION = "us-west-2"
 EC2_RESOURCE = boto3.resource('ec2', region_name=AWS_REGION)
-#KEY_PAIR_NAME = 'my-ssh-key-pair'
 AMI_ID = 'ami-06cffe063efe892ad'
 
 instances = EC2_RESOURCE.create_instances(
@@ -10,7 +9,6 @@ instances = EC2_RESOURCE.create_instances(
     MaxCount = 1,
     ImageId=AMI_ID,
     InstanceType='t2.micro',
-    # KeyName=KEY_PAIR_NAME,
     TagSpecifications=[
         {
             'ResourceType': 'instance',
