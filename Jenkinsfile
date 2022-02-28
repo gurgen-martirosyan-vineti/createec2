@@ -1,5 +1,9 @@
 pipeline {
-    agent jenkins-salve
+    agent {
+        kubernetes {
+            label 'jenkins-slave'
+        }
+    }
 
     stages {
         stage("Checkout") {
