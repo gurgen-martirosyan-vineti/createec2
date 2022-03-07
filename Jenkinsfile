@@ -12,9 +12,9 @@ pipeline {
                     checkout scm: [
                             $class: 'GitSCM',
                             userRemoteConfigs: [[
-                                                        credentialsId: 'GitHub-Credentials',
-                                                        url: 'https://github.com/gurgen-martirosyan-vineti/createec2.git'
-                                                ]],
+                                 credentialsId: 'GitHub-Credentials',
+                                 url: 'https://github.com/gurgen-martirosyan-vineti/createec2.git'
+                                 ]],
                             branches: [[name: "main"]]
                     ]
                 }
