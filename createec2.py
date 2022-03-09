@@ -1,3 +1,4 @@
+import os
 import boto3
 
 AWS_REGION = "us-west-2"
@@ -15,7 +16,7 @@ instances = EC2_RESOURCE.create_instances(
             'Tags': [
                 {
                     'Key': 'Name',
-                    'Value': 'gurgen-ec2'
+                    'Value': os.environ["EC2_NAME_TAG"]
                 },
             ]
         },
