@@ -79,5 +79,12 @@ pipeline {
 
             }
         }
+        stage('Deploy') {
+            when { tag "v2.*" }
+            steps {
+                echo 'Deploying only because this commit is tagged...'
+                sh 'make deploy'
+            }
+        }
     }
 }
