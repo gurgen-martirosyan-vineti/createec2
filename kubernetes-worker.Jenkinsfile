@@ -83,7 +83,6 @@ pipeline {
             when { tag "*" }
             steps {
                 echo 'Deploying only because this commit is tagged...'
-                sh 'make deploy'
             }
         }
     }
