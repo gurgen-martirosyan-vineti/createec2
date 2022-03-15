@@ -79,12 +79,21 @@ pipeline {
 
             }
         }
-        stage('Deploy') {
+        stage('Deploy on dev') {
             when {
-                tag comparator: 'EQUALS', pattern: 'release-*'
+                expression { return env.TAG_NAME.contains('dev-') }
             }
             steps {
-                echo 'Deploying only because this commit is tagged...'
+                echo 'Deploying on dev'
+
+            }
+        }
+        stage('Deploy on prod') {
+            when {
+                expression { return env.TAG_NAME.contains('prod-') }
+            }
+            steps {
+                echo 'Deploying on prod'
 
             }
         }
