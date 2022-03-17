@@ -81,7 +81,7 @@ pipeline {
         }
         stage('Deploy on dev') {
             when {
-                expression { return env.TAG_NAME.contains('dev-') }
+                buildingTag()
             }
             steps {
                 echo 'Deploying on dev'
@@ -90,7 +90,7 @@ pipeline {
         }
         stage('Deploy on prod') {
             when {
-                expression { return env.TAG_NAME.contains('prod-') }
+                buildingRelease()
             }
             steps {
                 echo 'Deploying on prod'
@@ -99,3 +99,8 @@ pipeline {
         }
     }
 }
+
+
+//when {
+//    expression { return env.TAG_NAME.contains('dev-') }
+//}
