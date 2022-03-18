@@ -88,15 +88,7 @@ pipeline {
 
             }
         }
-        stage('Deploy on prod') {
-            when {
-                buildingRelease()
-            }
-            steps {
-                echo 'Deploying on prod'
 
-            }
-        }
     }
 }
 
