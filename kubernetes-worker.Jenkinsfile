@@ -110,13 +110,13 @@ pipeline {
                 }
             }
         }
-        stage("Development deploy") {
+        stage("Development Deploy") {
             when { environment (name: "env.prerelease", value: "true" ) }
             steps {
                 container('docker'){
                     dir ("createec2") {
                         sh  label: "Run Argo Workflow", script: """
-                        argo submit createec2-workflow.yaml -p ec2_tag_name="development" -n development
+                        argo submit  createec2-workflow.yaml -p ec2_tag_name="development" -n development
                         """
                     }
                 }
