@@ -38,11 +38,30 @@ pipeline {
         '''
         }
     }
+
+    triggers {
+        GenericTrigger(
+                genericVariables: [
+                        [key: 'env.prerelease', value: '$.release.prerelease']
+                ],
+
+                token: 'mytoken',
+        )
+    }
+
     stages {
         stage('Prepare') {
             steps {
                 container('docker') {
                     sh 'apk add git'
+                    sh 'apk add curl'
+                    sh label: "Install Argo Cli", script: """
+                    curl -sLO https://github.com/argoproj/argo-workflows/releases/download/v3.3.1/argo-linux-amd64.gz
+                    gunzip argo-linux-amd64.gz
+                    chmod +x argo-linux-amd64
+                    mv ./argo-linux-amd64 /usr/local/bin/argo
+                    argo version
+                    """
                 }
             }
         }
@@ -79,20 +98,29 @@ pipeline {
 
             }
         }
-        stage('Deploy on dev') {
-            when {
-                buildingTag()
-            }
+        stage("Production Deploy") {
+            when { environment (name: "env.prerelease", value: "false" ) }
             steps {
-                echo 'Deploying on dev'
-
+                container('docker'){
+                    dir ("createec2") {
+                        sh  label: "Run Argo Workflow", script: """
+                        argo submit createec2-workflow.yaml -p ec2_tag_name="production" -n production
+                        """
+                    }
+                }
             }
         }
-
+        stage("Development deploy") {
+            when { environment (name: "env.prerelease", value: "true" ) }
+            steps {
+                container('docker'){
+                    dir ("createec2") {
+                        sh  label: "Run Argo Workflow", script: """
+                        argo submit createec2-workflow.yaml -p ec2_tag_name="development" -n development
+                        """
+                    }
+                }
+            }
+        }
     }
 }
-
-
-//when {
-//    expression { return env.TAG_NAME.contains('dev-') }
-//}

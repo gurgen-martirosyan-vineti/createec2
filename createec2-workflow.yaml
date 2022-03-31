@@ -5,6 +5,10 @@ metadata:
   namespace: argo
 spec:
   entrypoint: createec2-workflow
+  arguments:
+    parameters:
+      - name: ec2_tag_name
+        value: EC2
   ttlStrategy:
     secondsAfterSuccess: 1800 # 30 minutes
   volumes:
@@ -19,6 +23,8 @@ spec:
         imagePullPolicy: IfNotPresent
         command: [ "python", "./createec2.py" ]
         env:
+          - name: EC2_NAME_TAG
+            value: "{{workflow.parameters.ec2_tag_name}}"
           - name: AWS_ACCESS_KEY_ID
             valueFrom:
               secretKeyRef:
